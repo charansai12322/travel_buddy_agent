@@ -1,8 +1,16 @@
 import type { HealthResponse, QueryResponse } from '../types/api';
 
-const API_BASE_URL = (
-  import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000'
-).replace(/\/+$/, '');
+const getBaseUrl = (): string => {
+  if (import.meta.env.VITE_API_BASE_URL) {
+    return import.meta.env.VITE_API_BASE_URL;
+  }
+  if (import.meta.env.PROD) {
+    return 'https://travel-buddy-agent.onrender.com';
+  }
+  return 'http://localhost:8000';
+};
+
+const API_BASE_URL = getBaseUrl().replace(/\/+$/, '');
 
 /**
  * Checks backend health via GET /api/health with a short timeout.
